@@ -11,6 +11,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+Pro:wght@400;600;700&display=swap"
         rel="stylesheet">
+    <!-- Material Symbols Rounded para icono de lengua de señas -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -50,9 +52,17 @@
     </main>
 
     <footer role="contentinfo" class="footer">
-        <p tabindex="0">&copy; 2025 Borde | Narrativas al márgen</p>
+        <p tabindex="0">&copy; 2025 Borde | relatos al márgen</p>
     </footer>
 
+    <!-- Modal para video de lengua de señas -->
+    <div id="modal-ls" class="modal-ls" aria-modal="true" role="dialog" hidden>
+        <div class="modal-ls-content">
+            <button id="close-modal-ls" class="close-modal-ls" aria-label="Cerrar video">&times;</button>
+            <iframe id="iframe-ls" width="560" height="315" frameborder="0" allowfullscreen
+                title="Video en Lengua de Señas"></iframe>
+        </div>
+    </div>
     <script src="app.js"></script>
 </body>
 

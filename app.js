@@ -16,86 +16,61 @@ document.addEventListener('DOMContentLoaded', () => {
   // Datos simulados de relatos
   const relatos = [
     {
-      categoria: "Cuento",
-      imagen: "img/cuento1.png",
+      categoria: "Dramaturgia",
+      imagen: "img/Mito_Claudia.webp",
       alt: "Ilustración de un niño en un bosque oscuro",
-      titulo: "El bosque susurra",
-      sinopsis: "Un niño se adentra en un bosque misterioso donde los árboles parecen hablar y los secretos se esconden entre las sombras. ¿Logrará encontrar el camino de regreso?",
-      autor: "María López",
-      ilustrador: "Juan Pérez",
+      titulo: "El Mito de Claudia",
+      sinopsis: "Claudia enfrenta batallas domésticas en un mundo donde las garrafas explotan como repollos, los virus entran por WhatsApp y las bicicletas fijas son una trampa. ¿Y si el encierro siempre fue parte del plan?",
+      autor: "Claudia Fernandez, Catalina Artecona y Joaquín Doldán",
+      ilustrador: "Nombre",
       audio: "audios/cuento1.mp3",
       fecha: "15/07/2025",
-      enlace: "#cuento1"
-    },
+      enlace: "/cuentos/el_mito_de_claudia.html",
+      videoLS: "https://www.youtube.com/embed/6SzEKPkNQwY" 
+  },
     {
-      categoria: "Poesía",
+      categoria: "Cuento",
       imagen: "img/el_pozo.png",
       alt: "Ilustración de hojas flotando en el viento",
-      titulo: "Hojas al viento",
-      sinopsis: "Versos que exploran la libertad y el paso del tiempo, comparando la vida con hojas que bailan y se dejan llevar por la brisa.",
-      autor: "Carlos Ruiz",
-      ilustrador: "Ana Torres",
+      titulo: "Título del cuento",
+      sinopsis: "Sinopsis del cuento.",
+      autor: "Nombre",
+      ilustrador: "Nombre",
       audio: "audios/poema1.mp3",
       fecha: "10/07/2025",
       enlace: "#poema1"
     },
     {
-      categoria: "Cuento",
-      imagen: "img/cuento2.jpg",
-      alt: "Faro entre la niebla",
-      titulo: "El faro en la niebla",
-      sinopsis: "Cada noche, el faro guiaba a los barcos perdidos entre la bruma. Pero una noche, la luz titiló y un misterioso visitante llegó a la costa, cambiando la vida del farero para siempre.",
-      autor: "Sofía Méndez",
-      ilustrador: "Pedro Salas",
-      audio: "audios/cuento2.mp3",
-      fecha: "18/07/2025",
-      enlace: "#cuento2"
-    },
-    {
       categoria: "Poesía",
-      imagen: "img/poema2.jpg",
-      alt: "Río fluyendo entre árboles",
-      titulo: "Caminos de agua",
-      sinopsis: "Ríos que cruzan la tierra, llevando historias y sueños. Susurros de peces y hojas, viajando hacia el mar infinito.",
-      autor: "Lucía Torres",
-      ilustrador: "Miguel Ríos",
+      imagen: "img/poesia.jpg",
+      alt: "Faro entre la niebla",
+      titulo: "Título del poema",
+      sinopsis: "Sinopsis del poema.",
+      autor: "Nombre",
+      ilustrador: "Nombre",
       audio: "audios/poema2.mp3",
-      fecha: "19/07/2025",
+      fecha: "18/07/2025",
       enlace: "#poema2"
     },
-    {
-      categoria: "Microcuento",
-      imagen: "img/microcuento1.jpg",
-      alt: "Reloj detenido en el tiempo",
-      titulo: "El instante eterno",
-      sinopsis: "El reloj se detuvo justo antes del beso. El tiempo, celoso, no quiso que ese instante terminara jamás.",
-      autor: "Gabriel Soto",
-      ilustrador: "Elena Vidal",
-      audio: "audios/microcuento1.mp3",
-      fecha: "20/07/2025",
-      enlace: "#microcuento1"
-    },
-    {
-      categoria: "Poesía Visual",
-      imagen: "img/poesia_visual.jpg",
-      alt: "Haz de luz atravesando una ventana",
-      titulo: "Luz",
-      sinopsis: "Un haz atraviesa la ventana, dibujando en el suelo palabras que sólo el polvo puede leer.",
-      autor: "Valeria Núñez",
-      ilustrador: "Tomás Blanco",
-      audio: "audios/poesia_visual.mp3",
-      fecha: "21/07/2025",
-      enlace: "#poesia_visual"
-    }
   ];
 
   const lista = document.getElementById('literatura-lista');
 
-  relatos.forEach(relato => {
+  relatos.forEach((relato, idx) => {
     const li = document.createElement('li');
     li.className = 'card';
+    // El icono solo es interactivo si hay videoLS
+    const iconoLS = relato.videoLS ?
+      `<span class="card-sign" title="Lengua de Señas" aria-label="Lengua de Señas" role="button" tabindex="0" data-video="${relato.videoLS}" aria-haspopup="dialog">
+        <span class="material-symbols-rounded">sign_language</span>
+      </span>`
+      :
+      `<span class="card-sign" title="Lengua de Señas" aria-label="Lengua de Señas" style="opacity:0.3;cursor:not-allowed;">
+        <span class="material-symbols-rounded">sign_language</span>
+      </span>`;
     li.innerHTML = `
       <article>
+        ${iconoLS}
         <a href="${relato.enlace}">
           <img src="${relato.imagen}" alt="${relato.alt}" class="card-img" />
         </a>
@@ -114,5 +89,42 @@ document.addEventListener('DOMContentLoaded', () => {
       </article>
     `;
     lista.appendChild(li);
+  });
+
+  // Modal funcionalidad
+  const modal = document.getElementById('modal-ls');
+  const iframe = document.getElementById('iframe-ls');
+  const closeBtn = document.getElementById('close-modal-ls');
+
+  document.querySelectorAll('.card-sign[role="button"]').forEach(icon => {
+    icon.addEventListener('click', function(e) {
+      const videoUrl = this.getAttribute('data-video');
+      if (videoUrl) {
+        iframe.src = videoUrl + '?autoplay=1';
+        modal.removeAttribute('hidden');
+        closeBtn.focus();
+      }
+    });
+    icon.addEventListener('keydown', function(e) {
+      if ((e.key === 'Enter' || e.key === ' ') && this.getAttribute('data-video')) {
+        iframe.src = this.getAttribute('data-video') + '?autoplay=1';
+        modal.removeAttribute('hidden');
+        closeBtn.focus();
+      }
+    });
+  });
+
+  function closeModalLS() {
+    modal.setAttribute('hidden', '');
+    iframe.src = '';
+  }
+  closeBtn.addEventListener('click', closeModalLS);
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) closeModalLS();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (!modal.hasAttribute('hidden') && (e.key === 'Escape' || e.key === 'Esc')) {
+      closeModalLS();
+    }
   });
 });
